@@ -1,14 +1,13 @@
-import 'package:anna_cantean/home_page/banner_page.dart';
-import 'package:anna_cantean/home_page/donation_page.dart';
-import 'package:anna_cantean/home_page/dropdown.dart';
-import 'package:anna_cantean/home_page/foodList_page.dart'; // Ensure correct import path
-import 'package:anna_cantean/home_page/survice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geocoding/geocoding.dart';
-import 'dart:io' as io;
+import 'package:anna_cantean/home_page/banner_page.dart';
+import 'package:anna_cantean/home_page/donation_page.dart';
+import 'package:anna_cantean/home_page/dropdown.dart';
+import 'package:anna_cantean/home_page/foodList_page.dart';
+import 'package:anna_cantean/home_page/survice.dart'; // Ensure correct import path
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController locationController = TextEditingController();
   String address = 'Address: ';
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xffFEBD01),
         title: const Text(
-          'Home page',
+          'Home Page',
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
         centerTitle: true,
@@ -55,29 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xffF4F3F3),
-                ),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: 'Search',
-                    hintStyle: TextStyle(color: Color(0xffBFBFBF)),
-                    border: InputBorder.none,
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 5),
             Container(
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 1),
@@ -87,51 +64,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            _getCurrentLocation();
-                          },
-                          icon: const Icon(
-                            Icons.location_on_rounded,
-                            color: Color(0xffFFD300),
-                            size: 30,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        SizedBox(
-                          width: 190,
-                          child: Text(
-                            locationController.text,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 15),
-                            maxLines: 2,
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xffFFEBE6),
-                            foregroundColor: const Color(0xfff1ba63),
-                            shadowColor: const Color(0xff930428),
-                            elevation: 8,
-                          ),
-                          child: const Text(
-                            "Change location",
-                            style: TextStyle(color: Color(0xffE20736)),
-                          ),
-                        ),
-                      ],
+                    IconButton(
+                      onPressed: () {
+                        _getCurrentLocation();
+                      },
+                      icon: const Icon(
+                        Icons.location_on_rounded,
+                        color: Color(0xffFFD300),
+                        size: 30,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    SizedBox(
+                      width: 280,
+                      child: Text(
+                        locationController.text,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 15),
+                        maxLines: 2,
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-            // const SizedBox(height: 10),
-            const banners(), // Ensure `banners` is a valid widget
+            const banner(), // Ensure `BannerPage` is a valid widget
             const Padding(
               padding: EdgeInsets.all(20),
               child: Row(
@@ -155,31 +112,31 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  ourServices('assets/images/food.png', "Food Menu", () {
+                  _ourServices('assets/images/food.png', "Food Menu", () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            const FoodList(), // Correct `context`
+                            const FoodList(), // Ensure `FoodList` is a valid widget
                       ),
                     );
                   }),
-                  ourServices("assets/images/review.png", "Feedback Reviews",
+                  _ourServices("assets/images/review.png", "Feedback Reviews",
                       () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            const RatingPage(), // Correct `context`
+                            const RatingPage(), // Ensure `RatingPage` is a valid widget
                       ),
                     );
                   }),
-                  ourServices("assets/images/donate.png", "Donation", () {
+                  _ourServices("assets/images/donate.png", "Donation", () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            const DonetionPage(), // Correct `context`
+                            const DonetionPage(), // Ensure `DonationPage` is a valid widget
                       ),
                     );
                   }),
@@ -192,8 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // ignore: non_constant_identifier_names
-  Widget ourServices(String image, String title, VoidCallback onPressed) {
+  Widget _ourServices(String image, String title, VoidCallback onPressed) {
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Container(
@@ -204,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: CupertinoButton(
-          onPressed: onPressed, // Call the callback directly
+          onPressed: onPressed,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -217,10 +173,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ClipOval(
                       child: Image.asset(
                         image,
-                        fit: BoxFit
-                            .cover, // Ensures the image covers the CircleAvatar without distortion
-                        height: 60, // Adjust height if needed
-                        width: 60, // Adjust width if needed
+                        fit: BoxFit.cover,
+                        height: 60,
+                        width: 60,
                       ),
                     ),
                   ),
@@ -249,10 +204,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _getCurrentLocation() async {
     try {
-      // Check and request location permissions
       await _checkLocationPermission();
 
-      // Get the current position
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
@@ -262,6 +215,10 @@ class _HomeScreenState extends State<HomeScreen> {
       await _getAddress(position.latitude, position.longitude);
     } catch (e) {
       print('Error getting location: $e');
+      setState(() {
+        locationController.text = 'Error getting location';
+        address = 'Error getting location';
+      });
     }
   }
 
@@ -275,9 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
       if (placemarks.isNotEmpty) {
         Placemark addressPlacemark = placemarks[0];
         String formattedAddress =
-            '${addressPlacemark.subLocality}, ${addressPlacemark.locality},';
-        // '${addressPlacemark.street},${addressPlacemark.subLocality}, ${addressPlacemark.locality},${addressPlacemark.administrativeArea},${addressPlacemark.postalCode}, ${addressPlacemark.country}';
-        print("maheshj: $formattedAddress");
+            '${addressPlacemark.subLocality}, ${addressPlacemark.locality}';
+        print("Formatted Address: $formattedAddress");
 
         setState(() {
           locationController.text = formattedAddress;
@@ -300,14 +256,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _checkLocationPermission() async {
-    // Only check and request permission if running on Android
-    if (io.Platform.isAndroid) {
-      var status = await Permission.location.status;
-      if (status != PermissionStatus.granted) {
-        // Request permission if it is not granted
-        await Permission.location.request();
-      }
+    var status = await Permission.location.status;
+
+    if (status.isDenied) {
+      await Permission.location.request();
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
     }
-    // iOS permissions are handled through Info.plist
   }
 }
