@@ -10,8 +10,7 @@ class AboutPage extends StatelessWidget {
         backgroundColor: Color(0xffE20736),
         title: const Text(
           'About',
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.w700, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: Colors.white),
         ),
       ),
       backgroundColor: Colors.white,

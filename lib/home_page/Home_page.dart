@@ -30,26 +30,26 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xffFEBD01),
+        backgroundColor: const Color(0xffffd300),
         title: const Text(
-          'Home Page',
-          style: TextStyle(fontWeight: FontWeight.w700),
+          'Anna Canteen',
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
         ),
         centerTitle: true,
-        actions: [
-          Container(
-            width: 70,
-            height: 100,
-            margin: const EdgeInsets.all(2),
-            decoration: const BoxDecoration(
-              color: Colors.orange,
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: AssetImage('assets/images/party.png'),
-              ),
-            ),
-          ),
-        ],
+        // actions: [
+        //   Container(
+        //     width: 70,
+        //     height: 100,
+        //     margin: const EdgeInsets.all(2),
+        //     decoration: const BoxDecoration(
+        //       color: Colors.orange,
+        //       shape: BoxShape.circle,
+        //       image: DecorationImage(
+        //         image: AssetImage('assets/images/party.png'),
+        //       ),
+        //     ),
+        //   ),
+        // ],
       ),
       drawer: const Dropdown(),
       body: SingleChildScrollView(
@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const banner(), // Ensure `BannerPage` is a valid widget
             const Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(18),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(1.0),
               child: Column(
                 children: [
                   _ourServices('assets/images/food.png', "Food Menu", () {
@@ -151,9 +151,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _ourServices(String image, String title, VoidCallback onPressed) {
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(5),
       child: Container(
-        height: 100,
+        height: 90,
         width: double.infinity,
         decoration: BoxDecoration(
           color: const Color(0xffFFEBE6),
