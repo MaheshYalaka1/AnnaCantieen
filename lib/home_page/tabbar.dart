@@ -29,9 +29,10 @@ class _home_pageState extends State<Tabbar_screen> {
     return Scaffold(
       backgroundColor: Colors.orange[50],
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xfffff8f8),
         color: const Color(0xffE20736),
         animationDuration: const Duration(milliseconds: 300),
+
         items: const [
           Icon(
             Icons.home,

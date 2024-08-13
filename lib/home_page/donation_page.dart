@@ -73,8 +73,7 @@ class _DonetionPage extends State<DonetionPage> {
         backgroundColor: const Color(0xffE20736),
         title: const Text(
           'Donation',
-          style: TextStyle(
-              color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: Colors.white),
         ),
       ),
       body: Center(
