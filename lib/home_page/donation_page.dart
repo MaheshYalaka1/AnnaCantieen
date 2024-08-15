@@ -19,23 +19,23 @@ class _DonetionPage extends State<DonetionPage> {
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
-  void payment(amount) async {
-    amount = amount;
-    var options = {
-      'key': 'rzp_live_Cv4tNJlReGwrkM',
-      'amount': amount * 100,
-      'name': 'Ellostar',
-      'description': _nameController.text,
-      'prefill': {
-        'contact': _phonenumber.text,
-      }
-    };
-    try {
-      _razorpay.open(options);
-    } catch (e) {
-      print('error: $e');
-    }
-  }
+  // void payment(amount) async {
+  //   amount = amount;
+  //   var options = {
+  //     'key': 'rzp_live_Cv4tNJlReGwrkM',
+  //     'amount': amount * 100,
+  //     'name': 'Ellostar',
+  //     'description': _nameController.text,
+  //     'prefill': {
+  //       'contact': _phonenumber.text,
+  //     }
+  //   };
+  //   try {
+  //     _razorpay.open(options);
+  //   } catch (e) {
+  //     print('error: $e');
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -44,13 +44,25 @@ class _DonetionPage extends State<DonetionPage> {
     _razorpay.clear();
   }
 
-  final TextEditingController _phonenumber = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _purposeController = TextEditingController();
-  final TextEditingController _amount = TextEditingController();
+
 
   final _formkey = GlobalKey<FormState>();
+
+  String? _selectedDonorType;
+  String? _selectedCountry;
+  String? _selectedState;
+  String? _selectedDistrict;
+  String? _selectedGender; // Gender selection
+  bool _breakfastSelected = false;
+  bool _lunchSelected = false;
+  bool _dinnerSelected = false;
+  bool _preferredCanteenSelected = false;
+  final List<String> _districts = ['District 1', 'District 2', 'District 3'];
+
+
+
+
+
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
     print("_handlePaymentSuccess${{response.paymentId}}");
@@ -65,6 +77,7 @@ class _DonetionPage extends State<DonetionPage> {
     print("_handleExternalWallet");
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,313 +91,435 @@ class _DonetionPage extends State<DonetionPage> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Form(
-            key: _formkey,
-            child: Column(
+          child: Column(
               children: [
-                Stack(
-                  children: [
-                    Container(
-                        height: 250,
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        // margin: EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                            // borderRadius: BorderRadius.circular(40),
-                            image: DecorationImage(
-                                image: AssetImage(
-                                  'assets/images/image.jpg',
-                                ),
-                                fit: BoxFit.cover))),
-                  ],
-                ),
+          Stack(
+          children: [
+          Container(
+          height: 250,
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              // margin: EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                // borderRadius: BorderRadius.circular(40),
+                  image: DecorationImage(
+                      image: AssetImage(
+                        'assets/images/image.jpg',
+                      ),
+                      fit: BoxFit.cover))),
+          ],
+        ),
+
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
+
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Full Name',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      TextFormField(
-                        controller: _nameController,
-                        validator: (value) {
-                          if (GetUtils.isUsername(value!)) {
-                            return null;
-                          }
-                          return ('enter your name');
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.person,
-                            color: Colors.orange,
+                  padding: const EdgeInsets.all(20.0),
+                  child: Form(
+                    key: _formkey,
+                    child:  Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Donate for Anna Canteen', style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xffdc0000)
+                              ),
+                              )
+                              
+                            ],
                           ),
-                          hintText: "enter your user name",
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(9.0),
-                            borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 246, 245, 245),
-                              width: 1.0,
-                            ),
+                          Divider(
+                            color: Color(0xffdc0000),
+                            thickness: 1,
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 16),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                            ),
+                          TextFormField(
+                            decoration: InputDecoration(labelText: 'Type of Donor*',labelStyle: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w700
+                            )),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter type of donor';
+                              }
+                              return null;
+                            },
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.orange.shade400),
+
+                          TextFormField(
+                            decoration: InputDecoration(labelText: 'Full Name*',
+                                labelStyle: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w700
+                                )),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter full name';
+                              }
+                              return null;
+                            },
                           ),
-                          fillColor: const Color(0xffff8f),
-                          filled: true,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'Mobile Number',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      TextFormField(
-                        controller: _phonenumber,
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (GetUtils.isUsername(value!)) {
-                            return null;
-                          }
-                          return ('enter your mobile number');
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.phone_android,
-                            color: Colors.orange,
-                          ),
-                          hintText: "enter your mobile number",
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(9.0),
-                            borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 246, 245, 245),
-                              width: 1.0,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 16),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.orange.shade400),
-                          ),
-                          fillColor: const Color(0xffff8f),
-                          filled: true,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'City',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      TextFormField(
-                        controller: _cityController,
-                        validator: (value) {
-                          if (GetUtils.isUsername(value!)) {
-                            return null;
-                          }
-                          return ('select your city');
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.villa,
-                            color: Colors.orange,
-                          ),
-                          hintText: "enter your city",
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(9.0),
-                            borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 246, 245, 245),
-                              width: 1.0,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 16),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.orange.shade400),
-                          ),
-                          fillColor: const Color(0xffff8f),
-                          filled: true,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'Purpose',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      TextFormField(
-                        controller: _purposeController,
-                        validator: (value) {
-                          if (GetUtils.isUsername(value!)) {
-                            return null;
-                          }
-                          return ('select your purpose');
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.celebration,
-                            color: Colors.orange,
-                          ),
-                          hintText: "enter your perpose",
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(9.0),
-                            borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 246, 245, 245),
-                              width: 1.0,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 16),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.orange.shade400),
-                          ),
-                          fillColor: const Color(0xffff8f),
-                          filled: true,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'Donation Amount',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      TextFormField(
-                        controller: _amount,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.currency_rupee,
-                            color: Colors.orange,
-                          ),
-                          hintText: "enter donation amount",
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(9.0),
-                            borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 246, 245, 245),
-                              width: 1.0,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 16),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.orange.shade400),
-                          ),
-                          fillColor: const Color(0xffff8f),
-                          filled: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your ammout';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_formkey.currentState!.validate()) {
-                            setState(() {
-                              int amount = int.parse(_amount.text.toString());
-                              payment(amount);
-                            });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xffE20736),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          minimumSize: const Size(300, 59),
-                        ),
-                        child: const Center(
-                          child: (Text(
-                            'Donation',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
+                          SizedBox(height: 10,),
+
+                          Text('Gender*',style:  TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w700
                           )),
-                        ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: RadioListTile<String>(
+                                  title: const Text('Male'),
+                                  value: 'Male',
+                                  groupValue: _selectedGender,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      _selectedGender = value;
+                                    });
+                                  },
+                                ),
+
+
+                              ),
+                              Expanded(
+                                child: RadioListTile<String>(
+                                  title: const Text('Female'),
+                                  value: 'Female',
+                                  groupValue: _selectedGender,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      _selectedGender = value;
+                                    }
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+                          Row(
+                            children: [
+
+                              Expanded(
+                                child: TextFormField(
+                                  decoration: InputDecoration(labelText: 'DOB (DD/MM/YYYY) ',labelStyle: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.w700
+                                  )),
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter pin code';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+
+
+
+                              SizedBox(width: 10),
+
+                              Expanded(
+                                child: TextFormField(
+                                  decoration: InputDecoration(labelText: 'Mobile / Phone Number*',labelStyle: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.w700
+                                  )),
+                                  keyboardType: TextInputType.phone,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter mobile/phone number';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          TextFormField(
+                            decoration: InputDecoration(labelText: 'E-Mail*',labelStyle: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w700
+                            )),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter email';
+                              }
+                              return null;
+                            },
+                          ),
+
+
+                          TextFormField(
+                            decoration: InputDecoration(labelText: 'Address*', labelStyle: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w700
+                            )),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter address';
+                              }
+                              return null;
+                            },
+                          ),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  decoration: InputDecoration(labelText: 'Village / Town / City*',labelStyle: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.w700
+                                  )),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter village/town/city';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: TextFormField(
+                                  decoration: InputDecoration(labelText: 'PinCode*',labelStyle: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.w700
+                                  )),
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter pin code';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+
+
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  decoration: InputDecoration(labelText: 'State*',labelStyle: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.w700
+                                  )),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter state';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: TextFormField(
+                                  decoration: InputDecoration(labelText: 'Country*',labelStyle: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.w700
+                                  )),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter country';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+
+
+                            ],
+                          ),
+                          SizedBox(height: 30,),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: Divider(
+                                    color: Color(0xff3C3B3B),
+                                    thickness: 2,
+                                  )),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  'Contribution',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      color: Color(0xffE20736),
+                                      fontSize: 24),
+                                ),
+                              ),
+                              Expanded(
+                                  child: Divider(
+                                    color: Color(0xff3C3B3B),
+                                    thickness: 2,
+                                  ))
+                            ],
+                          ),
+
+
+
+                          TextFormField(
+                            decoration: InputDecoration(labelText: 'Enter Amount ',labelStyle: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w700
+                            ),
+                              hintText:'Enter Amount',hintStyle: TextStyle(
+                                color: Colors.grey
+                              ),
+
+                            ),
+                            keyboardType: TextInputType.number,
+                          ),
+
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('(or)', style: TextStyle(fontWeight: FontWeight.bold,
+                                  fontSize: 24, color: Colors.orange.shade700),)
+                            ],
+                          ),
+                          SizedBox(height: 20,),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: Divider(
+                                    color: Color(0xff3C3B3B),
+                                    thickness: 2,
+                                  )),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  'Canteen Wise Contribution',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      color: Color(0xffE20736),
+                                      fontSize: 24),
+                                ),
+                              ),
+                              Expanded(
+                                  child: Divider(
+                                    color: Color(0xff3C3B3B),
+                                    thickness: 2,
+                                  ))
+                            ],
+                          ),
+
+
+
+
+
+
+                          RadioListTile<String>(
+                            title: const Text('State'),
+                            value: 'State',
+                            groupValue: _selectedState,
+                            onChanged: (String? value) {
+                              setState(() {
+                                _selectedState = value;
+                              });
+                            },
+                          ),
+                          RadioListTile<String>(
+                            title: const Text('Districts'),
+                            value: 'Districts',
+                            groupValue: _selectedState,
+                            onChanged: (String? value) {
+                              setState(() {
+                                _selectedState = value;
+                              });
+                            },
+                          ),
+                          if (_selectedState == 'Districts') ...[
+                            DropdownButtonFormField<String>(
+                              hint: Text('Select Districts'),
+                              value: _selectedDistrict,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _selectedDistrict = newValue;
+                                });
+                              },
+                              items: _districts.map((district) {
+                                return DropdownMenuItem(
+                                  child: Text(district),
+                                  value: district,
+                                );
+                              }).toList(),
+                              validator: (value) => value == null ? 'Please select a district' : null,
+                            ),
+                            CheckboxListTile(
+                              title: const Text('Breakfast'),
+                              value: _breakfastSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _breakfastSelected = value!;
+                                });
+                              },
+                            ),
+
+                            TextFormField(
+
+                              readOnly: true,
+                              initialValue: '₹ 1,56,310/-',
+                            ),
+                            CheckboxListTile(
+                              title: const Text('Lunch'),
+                              value: _lunchSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _lunchSelected = value!;
+                                });
+                              },
+                            ),
+                            CheckboxListTile(
+                              title: const Text('Dinner'),
+                              value: _dinnerSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _dinnerSelected = value!;
+                                });
+                              },
+                            ),
+                            CheckboxListTile(
+                              title: const Text('Preferred Canteen'),
+                              value: _preferredCanteenSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _preferredCanteenSelected = value!;
+                                });
+                              },
+                            ),
+                          ],
+                          SizedBox(height: 20),
+                          TextFormField(
+                            decoration: InputDecoration(labelText: 'Total Amount'),
+                            readOnly: true,
+                            initialValue: '₹ 1,56,310/-',
+                          ),
+                          SizedBox(height: 20),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (_formkey.currentState!.validate()) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Processing Payment')),
+                                  );
+                                  // Process payment here
+                                }
+                              },
+                              child: Text('Pay Now'),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+
                   ),
-                )
+                ),
+
               ],
             ),
           ),
         ),
-      ),
     );
   }
 }
