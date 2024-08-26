@@ -56,8 +56,14 @@ class _DonetionPage extends State<DonetionPage> {
   bool _breakfastSelected = false;
   bool _lunchSelected = false;
   bool _dinnerSelected = false;
-  bool _preferredCanteenSelected = false;
+  bool _breakfast1Selected = false;
+  bool _lunch1Selected = false;
+  bool _dinner1Selected = false;
+  bool _all = false;
+
+
   final List<String> _districts = ['District 1', 'District 2', 'District 3'];
+  final List<String> _states = ['State 1', 'State 2', 'State 3'];
 
 
 
@@ -299,6 +305,7 @@ class _DonetionPage extends State<DonetionPage> {
                           Row(
                             children: [
                               Expanded(
+
                                 child: TextFormField(
                                   decoration: InputDecoration(labelText: 'State*',labelStyle: TextStyle(
                                       fontSize: 16, fontWeight: FontWeight.w700
@@ -311,8 +318,9 @@ class _DonetionPage extends State<DonetionPage> {
                                   },
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              SizedBox(width: 100),
                               Expanded(
+
                                 child: TextFormField(
                                   decoration: InputDecoration(labelText: 'Country*',labelStyle: TextStyle(
                                       fontSize: 16, fontWeight: FontWeight.w700
@@ -409,7 +417,6 @@ class _DonetionPage extends State<DonetionPage> {
 
 
 
-
                           RadioListTile<String>(
                             title: const Text('State'),
                             value: 'State',
@@ -420,6 +427,46 @@ class _DonetionPage extends State<DonetionPage> {
                               });
                             },
                           ),
+                          if (_selectedState == 'State' ) ...[
+
+
+                            TextFormField(
+                              readOnly: true,
+                              initialValue: '₹ 1,56,310/-',
+                            ),
+                            CheckboxListTile(
+                              title: const Text('Lunch'),
+                              value: _lunchSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _lunchSelected = value!;
+                                });
+                              },
+                            ),
+                            CheckboxListTile(
+                              title: const Text('Dinner'),
+                              value: _dinnerSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _dinnerSelected = value!;
+                                });
+                              },
+                            ),
+                            CheckboxListTile(
+                              title: const Text('Preferred Canteen'),
+                              value: _all,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _all = value!;
+                                });
+                              },
+                            ),
+                          ],
+
+
+
+
+
                           RadioListTile<String>(
                             title: const Text('Districts'),
                             value: 'Districts',
@@ -430,7 +477,7 @@ class _DonetionPage extends State<DonetionPage> {
                               });
                             },
                           ),
-                          if (_selectedState == 'Districts') ...[
+                          if ( _selectedState == 'Districts') ...[
                             DropdownButtonFormField<String>(
                               hint: Text('Select Districts'),
                               value: _selectedDistrict,
@@ -456,40 +503,60 @@ class _DonetionPage extends State<DonetionPage> {
                                 });
                               },
                             ),
-
                             TextFormField(
-
                               readOnly: true,
                               initialValue: '₹ 1,56,310/-',
                             ),
                             CheckboxListTile(
-                              title: const Text('Lunch'),
-                              value: _lunchSelected,
+                              title: const Text('boryani'),
+                              value: _lunch1Selected,
                               onChanged: (bool? value) {
                                 setState(() {
-                                  _lunchSelected = value!;
+                                  _lunch1Selected = value!;
                                 });
                               },
                             ),
-                            CheckboxListTile(
-                              title: const Text('Dinner'),
-                              value: _dinnerSelected,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _dinnerSelected = value!;
-                                });
-                              },
-                            ),
+                           Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                             children: [
+
+                               Expanded(
+
+                                 child:  CheckboxListTile(
+                                 title: const Text('Dinner'),
+                                 value: _dinnerSelected,
+                                 onChanged: (bool? value) {
+                                   setState(() {
+                                     _dinnerSelected = value!;
+                                   });
+                                 },
+                               ),
+                               ),
+
+                               Expanded(
+
+                                   child: Text('dddd'))
+                             ],
+                           ),
                             CheckboxListTile(
                               title: const Text('Preferred Canteen'),
-                              value: _preferredCanteenSelected,
+                              value: _all,
                               onChanged: (bool? value) {
                                 setState(() {
-                                  _preferredCanteenSelected = value!;
+                                  _all = value!;
                                 });
                               },
                             ),
                           ],
+
+
+
+
+
+
+
+
+
                           SizedBox(height: 20),
                           TextFormField(
                             decoration: InputDecoration(labelText: 'Total Amount'),
